@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
+import youtubeSearchReducer from '../YouTube/searchSlice';
 
 export default configureStore({
   reducer: {
-    counter: counterReducer,
+    youtube: youtubeSearchReducer,
   },
 });
