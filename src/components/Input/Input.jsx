@@ -2,13 +2,13 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Input = ({ onChange, value, ...restProps }) => {
+const Input = React.memo(({ onChange, value, ...restProps }) => {
   const onChangeHandler = useCallback((event) => {
     onChange(event.target.value);
   }, [onChange]);
 
   return <StyledInput value={value} onChange={onChangeHandler} {...restProps} />;
-};
+});
 
 Input.propTypes = {
   value: PropTypes.string,
@@ -25,6 +25,10 @@ const StyledInput = styled.input`
   border-radius: 5px;
   outline: none;
   opacity: 0.9;
+
+  &:focus {
+    box-shadow: 0 0 0 5px rgba(0,0,0, 0.2);
+  }
 `;
 
 export default Input;

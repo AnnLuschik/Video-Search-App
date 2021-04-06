@@ -21,8 +21,14 @@ const StyledButton = styled.button`
   border-radius: 5px;
   outline: none;
   cursor: pointer;
-  &:hover {
+  
+  &:hover,
+  &:active {
     background-color: #ec2f42;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 5px rgba(0,0,0, 0.2);
   }
 `;
 

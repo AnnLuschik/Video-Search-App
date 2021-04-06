@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Input } from '../Input';
 import { Button } from '../Button';
-import { fetchVideos } from '../../YouTube/searchSlice';
+import { fetchVideos, fetchVideoById } from '../../YouTube/searchSlice';
+import { isValidUrl, getVideoIdFromYoutubeUrl, getVideoStartFromYoutubeUrl } from '../../URLService';
 
 export const Header = () => {
   const [value, setValue] = useState('');
@@ -11,19 +12,20 @@ export const Header = () => {
 
   const searchHandler = useCallback(() => {
     if (value) {
-      dispatch(fetchVideos(value));
+      if (isValidUrl(value)) {
+        const videoId = getVideoIdFromYoutubeUrl(value);
+        const start = getVideoStartFromYoutubeUrl(value);
+        dispatch(fetchVideoById({ value: videoId, start }));
+      } else {
+        dispatch(fetchVideos(value));
+      }
     }
   }, [dispatch, value]);
-
-  // const searchMoreHandler = useCallback(() => {
-  //   dispatch(fetchMoreVideos());
-  // }, [dispatch]);
 
   return (
     <StyledHeader>
       <StyledForm onSubmit={(e) => e.preventDefault()}>
-        {/* <StyledLabel for="search">Enter keywords or link</StyledLabel> */}
-        <StyledInput id="search" onChange={(e) => setValue(e)} value={value} placeholder="I'm searching..." />
+        <StyledInput id="search" onChange={(e) => setValue(e)} value={value} placeholder="I'm searching..." type="search" />
         <Button onClick={searchHandler}>Search</Button>
       </StyledForm>
     </StyledHeader>
