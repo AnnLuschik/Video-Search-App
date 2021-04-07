@@ -41,6 +41,7 @@ VideoItem.propTypes = {
 };
 
 const Wrapper = styled.div`
+  max-width: 340px;
   margin: 0 8px 40px;
 `;
 

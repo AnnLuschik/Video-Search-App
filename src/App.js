@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { BarLoader } from 'react-spinners';
 import { Header } from './components';
 import { fetchMoreVideos, YouTube } from './YouTube';
 
 export const App = () => {
-  const { responseData } = useSelector((state) => state.youtube);
+  const { responseData, loading, errorMessage } = useSelector((state) => state.youtube);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,20 +37,19 @@ export const App = () => {
     <Wrapper>
       <Header />
       <Main>
+        {loading ? <BarLoader color="#F65263" width="100%" height="5px" /> : <div style={{ width: '100%', height: '5px' }} />}
         {responseData ? <YouTube data={responseData} ref={loader} /> : null}
+        {errorMessage ? <p style={{ color: '#b40719' }}>{errorMessage}</p> : null }
       </Main>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  margin: 0 24px;
+  max-width: 1440px;
+  margin: 0 auto;
 `;
 
 const Main = styled.main`
-  /* display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  grid-gap: 24px;
-  padding-top: 15px; */
-  /* background: #f9f9f9; */
+  width: 100%;
 `;

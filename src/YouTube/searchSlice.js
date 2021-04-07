@@ -1,6 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const apiKey = 'AIzaSyBG-MZWW4ByGc8ROu50qnbbOFRZ5Pht9Z0';
+const apiKey = 'AIzaSyDgkvG57b0sI7NJ5sYG4-16W7aC3hjRet0';
+
+const removeDuplicates = (arr, nextArr) => Array.from(new Set([...arr, ...nextArr]
+  .map((item) => JSON.stringify(item))))
+  .map((item) => JSON.parse(item));
 
 const initialState = {
   searchParams: null,
@@ -36,9 +40,13 @@ export const youtubeSearchSlice = createSlice({
     },
     getMoreVideosSuccess: (state, action) => {
       state.loadingMore = false;
+      // state.responseData = {
+      //   ...action.payload,
+      //   items: [...state.responseData.items, ...action.payload.items],
+      // };
       state.responseData = {
         ...action.payload,
-        items: [...state.responseData.items, ...action.payload.items],
+        items: removeDuplicates(state.responseData.items, action.payload.items),
       };
     },
     getMoreVideosFailure: (state, action) => {
@@ -79,6 +87,9 @@ export function fetchVideos(payload) {
     try {
       const response = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${payload}&type=video&key=${apiKey}`);
       const data = await response.json();
+      if (data.error) {
+        throw data.error;
+      }
       dispatch(getVideosSuccess(data));
     } catch (error) {
       dispatch(getVideosFailure(error.message));

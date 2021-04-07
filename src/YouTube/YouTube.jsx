@@ -11,12 +11,12 @@ const YouTube = React.forwardRef(({ data }, ref) => {
       {
       pageInfo.totalResults
         ? (
-          <VideoContainer>
+          <VideoContainer total={pageInfo.totalResults}>
             {items.map((item) => <VideoItem data={item} key={kind === 'youtube#searchListResponse' ? item.id.videoId : item.id} />)}
             <LoaderDiv ref={ref} />
           </VideoContainer>
         )
-        : <p>Ничего не найдено.</p>
+        : <NothingFound>Ничего не найдено.</NothingFound>
     }
     </StyledSection>
   );
@@ -27,19 +27,29 @@ YouTube.propTypes = {
 };
 
 const StyledSection = styled.section`
-  background: #f9f9f9;
+  padding: 25px 0;
+  background-color: #f9f9f9;
 `;
 
 const VideoContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  display: ${(props) => (props.total === 1 ? 'flex' : 'grid')};
+  grid-template-columns: repeat(auto-fill, 340px);
   grid-gap: 24px;
+  justify-content: center;
+  width: 100%;
   padding-top: 15px;
 `;
 
 const LoaderDiv = styled.div`
-  width: 100%;
+  width: 10px;
   height: 2px;
+`;
+
+const NothingFound = styled.p`
+  margin-top: 40px;
+  font-weight: 600;
+  font-size: 26px;
+  color: #000000;
 `;
 
 export default YouTube;
