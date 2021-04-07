@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { decode } from 'html-entities';
 import { Frame } from '../Frame';
 
 const VideoItem = React.memo(({ data }) => {
@@ -15,16 +16,18 @@ const VideoItem = React.memo(({ data }) => {
     } else setVideoId(id);
   }, [kind, id]);
 
+  const decodedTitle = decode(title);
+
   return (
     <Wrapper>
       <Container onClick={showVideo}>
         {
           videoId
             ? <Frame id={videoId} />
-            : <Preview src={thumbnails.medium.url} alt={`Preview for ${title}`} />
+            : <Preview src={thumbnails.medium.url} alt={`Preview for ${decodedTitle}`} />
         }
         <Details>
-          <Title>{title}</Title>
+          <Title>{decodedTitle}</Title>
           <PublishedAt dateTime={publishedAt}>{time}</PublishedAt>
         </Details>
       </Container>

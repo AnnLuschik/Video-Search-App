@@ -13,5 +13,5 @@ export const getVideoIdFromYoutubeUrl = (str) => {
 
 export const getVideoStartFromYoutubeUrl = (str) => {
   const regex = /(?:\?t=|#t=|\/t=)(\d+)/gi;
-  return regex.exec(str)[1];
+  return regex.exec(str)?.[1] || false;
 };

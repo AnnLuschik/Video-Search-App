@@ -90,10 +90,10 @@ export function fetchMoreVideos() {
   return async (dispatch, getState) => {
     dispatch(getMoreVideosRequest());
 
-    const { youtube: { searchParams, responseData: { nextPageToken } } } = getState();
+    const { youtube: { searchParams: { value }, responseData: { nextPageToken } } } = getState();
 
     try {
-      const response = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${searchParams}&pageToken=${nextPageToken}&type=video&key=${apiKey}`);
+      const response = await fetch(`https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${value}&pageToken=${nextPageToken}&type=video&key=${apiKey}`);
       const data = await response.json();
 
       dispatch(getMoreVideosSuccess(data));

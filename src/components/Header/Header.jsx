@@ -14,7 +14,7 @@ export const Header = () => {
     if (value) {
       if (isValidUrl(value)) {
         const videoId = getVideoIdFromYoutubeUrl(value);
-        const start = getVideoStartFromYoutubeUrl(value);
+        const start = getVideoStartFromYoutubeUrl(value) || '';
         dispatch(fetchVideoById({ value: videoId, start }));
       } else {
         dispatch(fetchVideos(value));
